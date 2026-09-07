@@ -45,5 +45,37 @@ function draw() {
 
   pop();
 
+  //huisje
+  push();
+  strokeWeight(5);
+  translate(20, 400);
+  fill(0,0,0,0);
+  
+  triangle(0,50,50,0,100,50);
+  rect(20,50,60,30);
+
+  pop();
+
+  
+
+  //stoplight
+  push();
+  translate(350, 25);
+
+  noStroke();
+  fill(125);
+  rect(0,0,80,240);
+  rect(20,240,40,100);
+
+  fill(255,0,0);
+  circle(40,40,50);
+  fill(255,125,0);
+  circle(40,120,50);
+  fill(0,255,0);
+  circle(40,200,50);
+
+  pop();
+
+
 
 }
