@@ -122,18 +122,20 @@ function draw() {
     [0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0],
-  ]
+    [0,0,0,0,0,0,0,0,0,0,0,0]
+  ];
   let mario_colors = [
     color(255,0,255),
     color(255,0,0),
     color(125,125,0),
-    color(255,125,50)
-  ]
+    color(255,125,50),
+    color(0,0,0)
+  ];
+
   for (let y = 0; y < mario.length; y++){
-    for (let x = 0; x < mario[x.length]; x++){
+    for (let x = 0; x < mario[x].length; x++){
       fill(mario_colors[mario[y][x]]);
-      rect(x*px_sixe,y*px_sixe,px_sixe,px_sixe);
+      square(x*px_sixe,y*px_sixe,px_sixe);
     }
   }
   pop();
