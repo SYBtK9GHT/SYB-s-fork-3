@@ -204,18 +204,11 @@ function setup() {
   
 }
 
-
-
 let last_time = 0;
 let light = 0;
 
-
-
 function draw() {
   
-
-  
-
   //stoplight`
 
   const original  = [
@@ -223,13 +216,10 @@ function draw() {
     color(0,255,0),
     color(255,125,0)
   ]
-
-  let light_colors = [
-    color(0,0,0,0),
-    color(0,0,0,0),
-    color(0,0,0,0)
-  ];
-
+  let light_colors = []
+  for (let i = 0; i < original.length; i++){
+    light_colors.push(color(0,0,0));
+  }
   push();
   translate(350, 25);
 
@@ -243,7 +233,6 @@ function draw() {
   }
 
   for (let i = 0; i < light_colors.length; i++){
-      //light_colors[i] = color(0,0,0,0);
       if (i == light){
         light_colors[i] = original[i];
         print(":3")
@@ -251,16 +240,12 @@ function draw() {
         
     }
 
-  if (millis() - last_time > 5000){
+  if (millis() - last_time > 2000){
     
     light++
     last_time = millis()
   }
-
-
   
-
-  stroke(0);
   fill(light_colors[0]);
   circle(40,40,50);
   fill(light_colors[1]);
@@ -268,12 +253,6 @@ function draw() {
   
   fill(light_colors[2]);
   circle(40,120,50);
-
-
-
-  
-
-
 
   pop();
 }
