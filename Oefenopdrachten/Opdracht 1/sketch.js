@@ -3,9 +3,8 @@
 
 function setup() {
   createCanvas(1250, 625);
-}
 
-function draw() {
+
   background(220);
 
   //naam
@@ -56,26 +55,6 @@ function draw() {
   
   triangle(0,50,50,0,100,50);
   rect(20,50,60,30);
-
-  pop();
-
-  
-
-  //stoplight
-  push();
-  translate(350, 25);
-
-  noStroke();
-  fill(125);
-  rect(0,0,80,240);
-  rect(20,240,40,100);
-
-  fill(255,0,0);
-  circle(40,40,50);
-  fill(255,125,0);
-  circle(40,120,50);
-  fill(0,255,0);
-  circle(40,200,50);
 
   pop();
 
@@ -143,11 +122,11 @@ function draw() {
 
   
   push();
-  translate(650,20);
+  translate(650,10);
 
   noStroke();
 
-  px_sixe = 10;
+  px_sixe = 12;
 
   let boykisser = [
     [0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0],
@@ -221,5 +200,80 @@ function draw() {
   }
 
   pop();
+
   
+}
+
+
+
+let last_time = 0;
+let light = 0;
+
+
+
+function draw() {
+  
+
+  
+
+  //stoplight`
+
+  const original  = [
+    color(255,0,0),
+    color(0,255,0),
+    color(255,125,0)
+  ]
+
+  let light_colors = [
+    color(0,0,0,0),
+    color(0,0,0,0),
+    color(0,0,0,0)
+  ];
+
+  push();
+  translate(350, 25);
+
+  noStroke();
+  fill(125);
+  rect(0,0,80,240);
+  rect(20,240,40,100);
+
+  if (light == 3){
+    light = 0;
+  }
+
+  for (let i = 0; i < light_colors.length; i++){
+      //light_colors[i] = color(0,0,0,0);
+      if (i == light){
+        light_colors[i] = original[i];
+        print(":3")
+      }
+        
+    }
+
+  if (millis() - last_time > 5000){
+    
+    light++
+    last_time = millis()
+  }
+
+
+  
+
+  stroke(0);
+  fill(light_colors[0]);
+  circle(40,40,50);
+  fill(light_colors[1]);
+  circle(40,200,50);
+  
+  fill(light_colors[2]);
+  circle(40,120,50);
+
+
+
+  
+
+
+
+  pop();
 }
