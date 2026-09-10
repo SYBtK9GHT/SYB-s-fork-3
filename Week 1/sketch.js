@@ -200,7 +200,7 @@ function setup() {
 
   fill(0);
   textSize(37);
-  text("You Like Pixel-Art Don't You!",0,600);
+  text("Silly cat: You Like Pixel-Art Don't You!",-50,600);
 
   pop();
 
