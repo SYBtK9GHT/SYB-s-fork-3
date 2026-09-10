@@ -13,8 +13,6 @@ function setup() {
   background(175);
 }
 
-
-
 function draw() {
 
   strokeWeight(5);
@@ -52,7 +50,7 @@ function mouseClicked(){
           turn = !turn;
         }
 
-        if (grid[y][0]== grid[y][1] && grid[y][2] == grid[y][1] && grid[y][2]!=0){
+        if ((grid[y][0]== grid[y][1] && grid[y][2] == grid[y][1] && grid[y][2]!=0)||(grid[0][x]== grid[1][x] && grid[2][x] == grid[1][x] && grid[2][x]!=0)||(grid[0][0]==grid[1][1]&&grid[1][1]==grid[2][2]&&grid[0][0]!=0)||(grid[0][2]==grid[1][1]&&grid[1][1]==grid[2][0]&&grid[0][2]!=0)){
           win = true;
           turn = !turn;
         }
