@@ -199,8 +199,8 @@ function setup() {
   }
 
   fill(0);
-  textSize(37);
-  text("Silly cat: You Like Pixel-Art Don't You!",-50,600);
+  textSize(30);
+  text("Silly cat (mauzymice): You Like Pixel-Art Don't You!",-150,600);
 
   pop();
 
