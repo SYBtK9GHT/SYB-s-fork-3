@@ -128,7 +128,7 @@ function setup() {
 
   px_sixe = 11;
 
-  const boykisser = [
+  const mauzymice = [
     [0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0],
     [0,0,0,0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,0,0],
     [0,0,0,3,3,1,1,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,1,1,3,0,0],
@@ -183,7 +183,7 @@ function setup() {
   ]
   
 
-  const boykisser_colors = [
+  const mauzymice_colors = [
     color(0,0,0,0),
     color(255),
     color(255,0,0),
@@ -191,9 +191,9 @@ function setup() {
     color(255,125,125)
   ]
 
-  for (let y = 0; y < boykisser.length; y++){
-    for (let x = 0; x < boykisser[y].length; x++){
-      fill(boykisser_colors[boykisser[y][x]]);
+  for (let y = 0; y < mauzymice.length; y++){
+    for (let x = 0; x < mauzymice[y].length; x++){
+      fill(mauzymice_colors[mauzymice[y][x]]);
       square(x*px_sixe,y*px_sixe,px_sixe);
     }
   }
