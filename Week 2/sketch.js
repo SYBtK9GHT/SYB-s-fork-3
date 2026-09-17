@@ -1,9 +1,14 @@
 let light_switch = 0;
+let day_night_cycle = 0;
+let day = true;
+let moon_star_pos = -200;
+const moon_star_size = 75;
 let last_time = 0;
-let cars_colors = 10;
+let cars_colors = 11;
 let car_models = 4;
 let automatic = false;
-let cars = []
+let cars = [];
+let honk = [];
 
 class car {
   constructor(lane = true, spd = 0, pos = 0, clr = 0, model = 0) {
@@ -16,7 +21,7 @@ class car {
 }
 
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 9; i++) {
   cars.push(new car(!!Math.floor(Math.random() * 1.9), 10, -135 * i, Math.floor(Math.random() * cars_colors), Math.floor(Math.random() * car_models)))
 }
 
@@ -24,6 +29,7 @@ for (let i = 0; i < 10; i++) {
 
 function setup() {
   createCanvas(1000, 600);
+  background(175, 200, 255);
 }
 
 
@@ -38,13 +44,14 @@ function draw_car(colors, pos, model) {
     color(255),
     color(25),
     color(155),
-    color(255,155,0),
-    color(0,255,155)
+    color(155),
+    color(255, 155, 0),
+    color(0, 255, 155)
   ];
-  
+
   fill(65)
-  rect(pos-135,15,50,10)
-  circle(pos-140,20,15)
+  rect(pos - 135, 15, 50, 10)
+  circle(pos - 140, 20, 15)
   fill(car_colors[colors]);
   stroke(car_colors[colors]);
   strokeWeight(1);
@@ -53,20 +60,23 @@ function draw_car(colors, pos, model) {
 
   if (model == 1 || model == 3) {
     triangle(
-      pos-125, 30,
-      pos-140,-10,
-      pos-125,-10);
-  }
+      pos - 125, 30,
+      pos - 140, -10,
+      pos - 125, -10);
 
-  if (model == 2 || model == 3){
+  }
+  fill(car_colors[colors]);
+  if (model == 2 || model == 3) {
     triangle(
-      pos-40, -40,
-      pos-40, -10,
+      pos - 40, -40,
+      pos - 40, -10,
       pos, -10);
+    fill(100, 155, 255)
+    rect(pos - 50, -28, 25, 18, 5)
   }
 
-  fill (100,155,255)
-  rect(pos-90,-30,40,20,5)
+  fill(100, 155, 255)
+  rect(pos - 90, -30, 40, 20, 5)
 
   noStroke();
   fill(50);
@@ -74,17 +84,106 @@ function draw_car(colors, pos, model) {
   circle(pos - 25, 30, 30);
 }
 
+function draw_tree(x, y) {
+
+  let wave = Math.sin(millis() / 100) * 1.5
+
+  fill(125, 75, 0);
+  rect(x, y - 100, 30, 100);
+
+  fill(0, 200, 0);
+  circle(x + 30 + wave, y - 100, 50);
+  fill(0, 150, 0);
+  circle(x + 15 + wave, y - 110, 50);
+  fill(0, 100, 0);
+  circle(x - wave, y - 100, 50);
 
 
+}
+
+
+function draw_cloud(x,y,s){
+  x -= millis()/10/s
+  while (x <= -100){
+    x += 1200
+  }
+
+
+  fill(175);
+  circle(x,y-10*s,60*s);
+  circle(x-35*s,y-5*s,50*s);
+  circle(x+35*s,y-5*s,50*s);
+  fill(255);
+  circle(x,y-5*s,60*s);
+  circle(x-35*s,y,50*s);
+  circle(x+35*s,y,50*s);
+  
+}
 
 
 function draw() {
-  background(175, 225, 255);
+
+
+  //moon n star
+  let backround_colors = get(0, 0);
+  let backround_color = color(backround_colors[0], backround_colors[1], backround_colors[2]);
+
+  let day_light = color(175, 200, 255);
+  let night_light = color(25, 0, 155);
+
+  let day_cycle = lerpColor(backround_color, day_light, 0.01);
+  let nigth_cycle = lerpColor(backround_color, night_light, 0.01)
+
+  let x = moon_star_pos * 2.5 + 500;
+  let y = Math.pow(moon_star_pos * 2.5 / 35, 2) + 40;
+
+  if (millis() - day_night_cycle >= 13) {
+    moon_star_pos++;
+    day_night_cycle = millis();
+  }
+
+
+
   noStroke();
+  if (day) {
+    background(day_cycle);
+
+    stroke(255, 0, 0);
+    fill(255, 0, 0, 125);
+    circle(x, y, moon_star_size * Math.sin(millis() / 1000) * 2);
+
+    noStroke();
+
+    fill(255, 255, 0);
+    circle(x, y, moon_star_size);
+  }
+
+  else {
+    background(nigth_cycle);
+
+    fill(125, 0, 255);
+    circle(x, y, moon_star_size * Math.sin(millis() / 1000) * 2);
+
+    fill(255);
+    circle(x, y, moon_star_size);
+
+    fill(175);
+    circle(x - 10, y - 20, moon_star_size / 7)
+    circle(x - 10, y + 15, moon_star_size / 5)
+    circle(x + 15, y - 15, moon_star_size / 10)
+    circle(x + 15, y + 10, moon_star_size / 3)
+    circle(x - 25, y - 5, moon_star_size / 10)
+
+  }
+
+  if (moon_star_pos >= 200 + moon_star_size) {
+    moon_star_pos = -200 - moon_star_size
+    day = !day
+  }
 
 
 
-
+  //stoplight switch
   if (automatic) {
     if (millis() - last_time > 3000) {
       light_switch++;
@@ -105,12 +204,21 @@ function draw() {
   }
 
 
+
+  //big clauds
+  draw_cloud(1100,200, 2);
+  draw_cloud(1100,100, 1.5);
+
+
+  //mauzymice
+
   push();
-  translate(1650, 300);
+  translate(375, 100);
 
   noStroke();
 
-  px_sixe = 3;
+  const px_sixe = 3;
+
 
   const mauzymice = [
     [0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0],
@@ -183,20 +291,42 @@ function draw() {
   }
   pop();
 
+
+
+
+  //big mountens 
   push();
   translate(0, 480);
 
   fill(100);
   triangle(100, 0, 400, 0, 250, -350);
   triangle(400, 0, 800, 0, 600, -300);
+  triangle(300, 0, 700, 0, 500, -250);
+  triangle(200, 0, 600, 0, 400, -250);
+  rect(400, -250, 100, 200)
 
+  //clouds
+   
+  draw_cloud(1100,-200, 1);
+
+  draw_cloud(1100,-150, 0.5);
+
+
+
+  //mountens
   fill(125);
   triangle(0, 0, 150, 0, 75, -150);
-  triangle(300, 0, 500, 0, 400, -250);
+  triangle(250, 0, 450, 0, 350, -250);
   triangle(725, 0, 875, 0, 800, -150);
 
+  for (let i = 0; i < 5; i++) {
+    draw_tree(50 + 125 * i, 0);
+  }
   pop();
 
+
+
+  //stoplicht
   push();
   translate(925, 300);
 
@@ -211,24 +341,32 @@ function draw() {
     color(0)
   ];
   fill(100);
-  rect(0, 0, 50, 150);
-  rect(12, 0, 26, 180)
+  rect(0, 0, 40, 120);
+  rect(13, 0, 14, 180)
+
+
+  
+
+  active_lights[light_switch] = lights[light_switch];
+
+  fill(active_lights[0]);
+  circle(20, 100, 30);
+  fill(active_lights[1]);
+  circle(20, 60, 30);
+  fill(active_lights[2]);
+  circle(20, 20, 30);
+
+  //trees
 
   for (let i = 0; i < active_lights.length; i++) {
     active_lights[i] = color(0, 0, 0);
   }
 
-  active_lights[light_switch] = lights[light_switch];
-
-  fill(active_lights[0]);
-  circle(25, 125, 40);
-  fill(active_lights[1]);
-  circle(25, 75, 40);
-  fill(active_lights[2]);
-  circle(25, 25, 40);
-
   pop();
 
+
+
+  //road
   push();
   translate(0, 500);
 
@@ -257,11 +395,6 @@ function draw() {
     const after_stop = 950;
     const stop = 850
 
-    // fill(255, 0, 255);
-    // rect(stop, 0, 2, 100);
-    // rect(after_stop, 0, 2, 100);
-
-    //change spped with light
     if (cars[i].pos > after_stop) {
       my_car.spd = lerp(my_car.spd, base_speed, 0.2);
     } else {
@@ -326,7 +459,16 @@ function draw() {
   }
 
   pop();
+  pop();
+  
+}
 
+function preload() {
+  honk[0] = loadSound("smth-8.mp3");
+  honk[1] = loadSound("clown-horn.mp3");
+  honk[2] = loadSound("fnaf-toot.mp3");
+  honk[3] = loadSound("honk-sound.mp3");
+  honk[4] = loadSound("music-honk.mp3");
 }
 
 function keyPressed() {
@@ -338,6 +480,26 @@ function keyPressed() {
   if (keyCode === 32) {
     automatic = !automatic;
   }
+}
+
+function mouseClicked(){
+  for (let i = 0; i < cars.length; i++){
+    let height = 460;
+    if (!cars[i].lane){height += 50}
+    // push()
+    // translate(0,0)
+    // fill(255,0,255);
+    // rect(cars[i].pos, height, -125, 70, 2)
+    // pop()
 
 
+    if (mouseX > cars[i].pos-125
+      &&mouseY > height
+      &&mouseX < cars[i].pos
+      &&mouseY < height+70
+    ){
+      console.log(cars[i].pos);
+      honk[Math.floor(Math.random()*4.05)].play()
+    }
+  }
 }
