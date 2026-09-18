@@ -9,6 +9,20 @@ let car_models = 4;
 let automatic = false;
 let cars = [];
 let honk = [];
+let stars = [];
+let star_sizes = [];
+
+function mix_stars(){
+  for (let i = 0; i < 150; i++){
+    stars[i] = Math.floor(Math.random()*1000);
+  }
+}
+
+function mix_star_sizes(){
+  for (let i = 0; i < 3; i++){
+    star_sizes[i] = Math.floor(Math.random()*8+3);
+  }
+}
 
 class car {
   constructor(lane = true, spd = 0, pos = 0, clr = 0, model = 0) {
@@ -77,6 +91,27 @@ function draw_car(colors, pos, model) {
 
   fill(100, 155, 255)
   rect(pos - 90, -30, 40, 20, 5)
+
+  stroke(0)  
+
+  if (day){
+    fill(255)
+    rect(pos-20,-10,20,10)
+    fill(155,0,0)
+    rect(pos-125,-10,20,10)
+    
+  }else{
+    fill(255,255,0)
+    rect(pos-20,-10,20,10)
+    fill(255,0,0)
+    rect(pos-125,-10,20,10)
+
+    noStroke()
+    fill(255,255,0,125)
+    triangle(pos-10,-5,pos+70,35,pos+70,-25)  
+    fill(255,0,0,125)
+    triangle(pos-115,-5,pos-150,35,pos-150,-25)
+  }
 
   noStroke();
   fill(50);
@@ -167,6 +202,12 @@ function draw() {
     fill(255);
     circle(x, y, moon_star_size);
 
+    for (let i = 0; i < stars.length; i++){
+      let j = i;
+      while(j >= 3){j -= 3}
+      circle(stars[i], stars[stars.length - i]/2.5, star_sizes[j])
+    }
+
     fill(175);
     circle(x - 10, y - 20, moon_star_size / 7)
     circle(x - 10, y + 15, moon_star_size / 5)
@@ -177,8 +218,10 @@ function draw() {
   }
 
   if (moon_star_pos >= 200 + moon_star_size) {
-    moon_star_pos = -200 - moon_star_size
-    day = !day
+    moon_star_pos = -200 - moon_star_size;
+    day = !day;
+    mix_stars();
+    mix_star_sizes();
   }
 
 
@@ -341,7 +384,7 @@ function draw() {
     color(0)
   ];
   fill(100);
-  rect(0, 0, 40, 120);
+  rect(0, 0, 40, 120, 10);
   rect(13, 0, 14, 180)
 
 
