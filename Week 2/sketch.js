@@ -362,6 +362,7 @@ function draw() {
   triangle(250, 0, 450, 0, 350, -250);
   triangle(725, 0, 875, 0, 800, -150);
 
+    //trees
   for (let i = 0; i < 5; i++) {
     draw_tree(50 + 125 * i, 0);
   }
@@ -399,7 +400,7 @@ function draw() {
   fill(active_lights[2]);
   circle(20, 20, 30);
 
-  //trees
+
 
   for (let i = 0; i < active_lights.length; i++) {
     active_lights[i] = color(0, 0, 0);
@@ -541,7 +542,6 @@ function mouseClicked(){
       &&mouseX < cars[i].pos
       &&mouseY < height+70
     ){
-      console.log(cars[i].pos);
       honk[Math.floor(Math.random()*4.05)].play()
     }
   }
