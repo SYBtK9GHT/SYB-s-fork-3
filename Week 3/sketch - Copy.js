@@ -1,53 +1,43 @@
 const px = 45;
 let win = false;
-const max_players = 4;
-let turn = 1;
+let turn = false
 let start = 0;
 let grid = [
-  [-1, -1, 0, 0, -1, -1, 0, 0, -1, -1],
-  [-1, 0, 0, -1, -1, 0, 0, -1, 0, -1],
-  [0, 0, -1, -1, 0, 0, -1, 0, 0, 0],
-  [0, -1, -1, 0, 0, 0, 0, -1, -1, 0],
-  [-1, 0, 0, 0, -1, 0, 0, 0, 0, -1],
-  [0, 0, -1, 0, 0, 0, -1, 0, -1, 0],
-  [0, -1, 0, 0, -1, -1, 0, 0, 0, 0],
-  [0, 0, 0, -1, 0, 0, -1, -1, 0, -1],
-  [-1, 0, -1, 0, 0, 0, 0, 0, 0, 0],
-  [-1, 0, 0, -1, -1, 0, 0, -1, -1, -1]
+  [-1, -1,  0,  0, -1, -1,  0,  0, -1, -1],
+  [-1,  0,  0, -1, -1,  0,  0, -1,  0, -1],
+  [ 0,  0, -1, -1,  0,  0, -1,  0,  0,  0],
+  [ 0, -1, -1,  0,  0,  0,  0, -1, -1,  0],
+  [-1,  0,  0,  0, -1,  0,  0,  0,  0, -1],
+  [ 0,  0, -1,  0,  0,  0, -1,  0, -1,  0],
+  [ 0, -1,  0,  0, -1, -1,  0,  0,  0,  0],
+  [ 0,  0,  0, -1,  0,  0, -1, -1,  0, -1],
+  [-1,  0, -1,  0,  0,  0,  0,  0,  0,  0],
+  [-1,  0,  0, -1, -1,  0,  0, -1, -1, -1]
 ];
 
 
 function setup() {
   createCanvas(1265, 650);
-  background(175)
+
 }
 
 function draw() {
-
-
+    
+  strokeWeight(5);
 
   const colors = [
     color(75),
     color(255, 0, 0),
-    color(0, 0, 255),
-    color(255, 255, 0),
-    color(0, 255, 0)
+    color(0, 0, 255)
   ];
-
+background(colors[turn+1]);
   //prints the grid
   for (let y = 0; y < grid.length; y++) {
     for (let x = 0; x < grid[y].length; x++) {
       if (grid[y][x] >= 0) {
-
+        fill(colors[grid[y][x]]);
         const pos_x = x * px + 20 * x + 10;
         const pos_y = y * px + 20 * y + 10;
-        fill(0, 0, 0, 0)
-        strokeWeight(7);
-        stroke(colors[turn])
-        square(pos_x, pos_y, px, 10);
-        fill(colors[grid[y][x]]);
-        stroke(0)
-        strokeWeight(5);
         square(pos_x, pos_y, px, 10);
       }
     }
@@ -55,13 +45,7 @@ function draw() {
 }
 
 
-function won() {
-  win = true;
-  turn--;
-  if (turn <= 0){
-    turn = max_players
-  }
-}
+
 
 function mouseClicked() {
   if (!win) {
@@ -78,17 +62,24 @@ function mouseClicked() {
 
             //check if square is empty and then fills it
             if (grid[y][x] == 0) {
-              grid[y][x] = turn
-              turn++;
-              if (turn > max_players) { turn = 1 }
+              if (turn) {
+                grid[y][x] = 2;
+              } else {
+                grid[y][x] = 1;
+              }
+              turn = !turn;
             }
           }
+
+
+
 
           //check rows
           if ((x - 1) > -1 && (x + 1) < grid[y].length) {
             if (grid[y][x - 1] == grid[y][x] && grid[y][x + 1] == grid[y][x] && grid[y][x + 1] > 0) {
               //triggers winning screen
-              won()
+              win = true;
+              turn = grid[y][x] - 1;
             }
           }
 
@@ -97,7 +88,8 @@ function mouseClicked() {
           if ((y - 1) > -1 && (y + 1) < grid.length) {
             if (grid[y - 1][x] == grid[y][x] && grid[y + 1][x] == grid[y][x] && grid[y + 1][x] > 0) {
               //triggers winning screen
-              won()
+              win = true;
+              turn = grid[y][x] - 1;
             }
           }
 
@@ -109,7 +101,8 @@ function mouseClicked() {
               || (grid[y - 1][x + 1] == grid[y][x] && grid[y][x] == grid[y + 1][x - 1] && grid[y - 1][x + 1] > 0)) {
 
               //triggers winning screen
-              won()
+              win = true;
+              turn = grid[y][x] - 1;
             }
           }
 
@@ -121,7 +114,7 @@ function mouseClicked() {
         for (let i = 0; i < grid.length; i++) {
           for (let j = 0; j < grid[i].length; j++) {
             if (grid[i][j] >= 0) {
-              grid[i][j] = turn
+              grid[i][j] = turn + 1
             }
           }
         }
