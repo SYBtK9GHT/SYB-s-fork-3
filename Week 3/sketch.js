@@ -11,6 +11,8 @@ let options = [
   [2, 3, 4, 5, 6],
   [7, 8, 9, 10, 11],
 ]
+const options_x = 132;
+const options_y = 100;
 
 
 function rng_grid() {
@@ -18,14 +20,13 @@ function rng_grid() {
   for (let y = 0; y < 10; y++) {
     grid.push([]);
     for (let x = 0; x < 19; x++) {
-      grid[y].push(Math.random() < (0.20 + 0.04 * max_players) ? 0 : -1);
+      grid[y].push(Math.random() < (0.20 + 0.06 * max_players - Math.pow(max_players, 2)/500) ? 0 : -1);
     }
   }
 }
 
 function setup() {
   createCanvas(1265, 650);
-
   rng_grid();
 }
 
@@ -66,7 +67,7 @@ function draw() {
     }
   } else {
     push()
-    translate(132, 100)
+    translate(options_x, options_y)
     noStroke();
     fill(125);
     rect(0, 0, 1000, 400);
@@ -114,6 +115,7 @@ function reset_game(time) {
       }
     }
     win = false
+    turn = 1
 
   }, time);
 }
@@ -208,8 +210,8 @@ function mouseClicked() {
   } else {
     for (let i = 0; i < options.length; i++) {
       for (let j = 0; j < options[i].length; j++) {
-        let pos_y = i * button_px + 20 * i + 110;
-        let pos_x = j * button_px + 20 * j + 142;
+        let pos_y = i * button_px + 20 * i + options_y + 10;
+        let pos_x = j * button_px + 20 * j + options_x + 10;
         if (mouseX > pos_x
           && mouseY > pos_y
           && mouseX < pos_x + button_px
