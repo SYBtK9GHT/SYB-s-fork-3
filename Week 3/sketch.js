@@ -6,6 +6,7 @@ let max_players = 10;
 let turn = 1;
 let start = 0;
 let grid = [];
+let restart = false;
 let paused = true
 let options = [
   [2, 3, 4, 5, 6],
@@ -59,12 +60,21 @@ function draw() {
           stroke(colors[turn])
           square(pos_x, pos_y, px, 10);
           fill(colors[grid[y][x]]);
+          if (restart && !win) {
+            fill(
+              Math.floor(Math.random()*255),
+              Math.floor(Math.random()*255),
+              Math.floor(Math.random()*255)
+            )
+          }
           stroke(0)
           strokeWeight(5);
           square(pos_x, pos_y, px, 10);
+
         }
       }
     }
+
   } else {
     push()
     translate(options_x, options_y)
@@ -116,7 +126,7 @@ function reset_game(time) {
     }
     win = false
     turn = 1
-
+    restart = false
   }, time);
 }
 
@@ -192,7 +202,7 @@ function mouseClicked() {
       }
 
       //checks if there are no more spaces left
-      let restart = true;
+      restart = true;
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
           if (grid[i][j] == 0 || win) {
@@ -217,13 +227,13 @@ function mouseClicked() {
           && mouseX < pos_x + button_px
           && mouseY < pos_y + button_px) {
           let selected_option = options[i][j];
-          if (selected_option != 11){
+          if (selected_option != 11) {
             max_players = selected_option;
           }
           paused = false
           reset_game()
           rng_grid()
-          
+
         }
       }
     }
