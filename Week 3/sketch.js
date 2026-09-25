@@ -20,7 +20,7 @@ function rng_grid() {
   for (let y = 0; y < 10; y++) {
     grid.push([]);
     for (let x = 0; x < 19; x++) {
-      grid[y].push(Math.random() < (0.20 + 0.06 * max_players - Math.pow(max_players, 2)/500) ? 0 : -1);
+      grid[y].push(Math.random() < (0.25 + 0.065 * max_players - Math.pow(max_players, 2)/500) ? 0 : -1);
     }
   }
 }
