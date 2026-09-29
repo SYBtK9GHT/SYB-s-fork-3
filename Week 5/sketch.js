@@ -1,5 +1,13 @@
+let awnsers = [
+  ["a",true],
+  ["b",false],
+  ["c",false],
+  ["d",false]
+]
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 600);
+  console.log(awnsers)
 }
 
 function draw() {

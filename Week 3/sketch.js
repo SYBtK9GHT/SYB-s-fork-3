@@ -163,7 +163,7 @@ function mouseClicked() {
           if ((x - 1) > -1 && (x + 1) < grid[y].length) {
             if (grid[y][x - 1] == grid[y][x] && grid[y][x + 1] == grid[y][x] && grid[y][x + 1] > 0) {
               //triggers winning screen
-              won()
+              won();
             }
           }
 
@@ -172,7 +172,7 @@ function mouseClicked() {
           if ((y - 1) > -1 && (y + 1) < grid.length) {
             if (grid[y - 1][x] == grid[y][x] && grid[y + 1][x] == grid[y][x] && grid[y + 1][x] > 0) {
               //triggers winning screen
-              won()
+              won();
             }
           }
 
@@ -184,7 +184,7 @@ function mouseClicked() {
               || (grid[y - 1][x + 1] == grid[y][x] && grid[y][x] == grid[y + 1][x - 1] && grid[y - 1][x + 1] > 0)) {
 
               //triggers winning screen
-              won()
+              won();
             }
           }
         }

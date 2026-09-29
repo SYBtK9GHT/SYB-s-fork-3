@@ -464,7 +464,10 @@ function draw() {
     // brakes
 
     for (let j = 0; j < cars.length; j++) {
-      if (my_car != cars[j] && my_car.lane == cars[j].lane && my_car.pos > cars[j].pos - 185 && my_car.pos < cars[j].pos) {
+      if (my_car != cars[j]
+        && my_car.lane == cars[j].lane
+        && my_car.pos > cars[j].pos - 185
+        && my_car.pos < cars[j].pos) {
         my_car.spd = lerp(my_car.spd, 0, acc * 3.5);
       }
     }
