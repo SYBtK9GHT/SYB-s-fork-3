@@ -1,21 +1,19 @@
-const width = 800;
-const height = 600;
 const art_styles = 4;
-let art_style = 3//Math.floor(Math.random()*art_styles);
+let art_style = Math.floor(Math.random() * art_styles);
 let angle = 0;
 const plane_colors_lengnth = 10;
-const speed = 5;
+const plane_speed = 5;
 const shadows = 6;
 const size = 30;
 const max_travel = 2000
-let x_render = 0
-let y_render = 0
 let planets = []
-let sun_size = 20
-const render_speed = 200
+let sun_size = 50
 let bubbles = []
 let flying_planes = []
-let l = Math.floor(Math.random() * 80 + 20)
+let l, a, b;
+const MAX_ITER = 100;
+let maxx, maxy;
+let yy = 0;
 
 
 class bubble {
@@ -24,7 +22,7 @@ class bubble {
     this.y = y
     this.z = z
     this.size = size
-  }
+  };
 }
 
 class flying_plane {
@@ -34,11 +32,11 @@ class flying_plane {
     this.x = x
     this.y = y
     this.travel = travel
-  }
+  };
 }
 
 function make_flying_planes() {
-  flying_planes = []
+  flying_planes = [];
   for (let _ = 0; _ < 300; _++) {
     flying_planes.push(
       new flying_plane(
@@ -49,43 +47,60 @@ function make_flying_planes() {
         Math.floor(Math.random() * max_travel * 2 - max_travel)
       )
     )
-  }
+  };
 }
 
-class planet{
-  constructor(x,y,r,spd,size,color,travel){
+class planet {
+  constructor(x, y, r, spd, size, color, travel) {
     this.x = x
     this.y = y
     this.r = r
     this.spd = spd
     this.size = size
-    this.color = color 
-    this.travel = travel 
-  }
+    this.color = color
+    this.travel = travel
+  };
 }
-
 
 function make_planets() {
   planets = []
   for (let i = 0; i < 15; i++) {
     planets.push(new planet(
-      0,0,
-      Math.floor(Math.random() * 7 + 1)*3 + 55*i + 15+sun_size*2,
-      Math.random()/75+0.05,
+      0, 0,
+      Math.floor(Math.random() * 7 + 1) * 3 + 55 * i + 15 + sun_size * 2,
+      Math.random() / 75 + 0.05,
       Math.floor(Math.random() * 10 + 7),
       Math.floor(Math.random() * 6),
       Math.random() * 6.28
     ))
-  }
+  };
 }
 
-make_bubbles()
-make_flying_planes()
-make_planets()
+function julia(x, y) {
+  //calculats the fractal of julia
+  for (let iter = 0; iter < MAX_ITER; iter++) {
+    const u = Math.sin(x) * Math.cosh(y);
+    const v = Math.cos(x) * Math.sinh(y);
 
+    x = a * u - b * v;
+    y = b * u + a * v;
 
+    if (Math.abs(y) > 50 || Math.abs(x) > 50) {
+      return iter;
+    }
+  }
+
+  return MAX_ITER;
+}
+function julia_rng() {
+  //add randomness to the julia fractal
+  l = (Math.random() - 0.5) / 10
+  a = 1 + l;
+  b = 0.2 + l;
+}
 
 function draw_flying_plane(plane_color, dir, x, y, travel) {
+  //picks a color from the paller
   let colors = [
     color(255, 0, 0),
     color(0, 0, 255),
@@ -97,11 +112,10 @@ function draw_flying_plane(plane_color, dir, x, y, travel) {
     color(255),
     color(255, 0, 255),
     color(255, 0, 255),
-  ]
+  ];
+  let shadow = colors[plane_color];
 
-
-  let shadow = colors[plane_color]
-
+  //draws the plane with a few addes shadows
   noStroke();
   for (let j = 0; j < shadows; j++) {
     fill(shadow);
@@ -115,7 +129,8 @@ function draw_flying_plane(plane_color, dir, x, y, travel) {
 }
 
 function make_bubbles() {
-  bubbles = []
+  bubbles = [] //clears array
+  //fill array
   for (let _ = 0; _ < 50; _++) {
     bubbles.push(new bubble(
       Math.floor(Math.random() * 100 - 50),
@@ -123,39 +138,49 @@ function make_bubbles() {
       Math.floor(Math.random() * 100 - 50),
       Math.floor(1.2 * Math.random() * 2.5 + 2),
     ))
-  }
+  };
 }
+
 
 
 function resetCamera() {
+  //put cam in my custom default position and oriantation
   camera(
-    0, 0, 800,  // camera position: x, y, z
-    0, 0, 0,    // point to look at
-    0, 1, 0     // up direction
+    0, 0, 800,  
+    0, 0, 0,    
+    0, 1, 0     
   );
-  x_render = 0;
-  y_render = 0;
 }
+
+
+
+
 
 function setup() {
-  createCanvas(800, 600, WEBGL);
+  createCanvas(windowWidth - 25, windowHeight - 20, WEBGL);
   background(0);
+
+  //make first rng to make them something other than NULL
+  make_bubbles();
+  make_flying_planes();
+  make_planets();
+  julia_rng();
 }
-
-
 
 function draw() {
   angleMode(DEGREES);
   if (art_style == 0) {
 
-
+    //setup the cam and color
     background(0);
     rotate(-20, [1, 0, 0]);
 
-
+    //rotates cam
     angle += 0.20;
     rotate(angle, [0, 1, 0]);
 
+
+    //makes the planes vissible
     for (let i = 0; i < flying_planes.length; i++) {
       draw_flying_plane(
         flying_planes[i].plane_color,
@@ -165,21 +190,24 @@ function draw() {
         flying_planes[i].travel
       );
 
+      //makes sure the planes don't clip
       for (let k = 0; k < flying_planes.length; k++) {
         if (flying_planes[i] != flying_planes[k]
           && flying_planes[i].travel < flying_planes[k].travel
-          && flying_planes[i].travel > flying_planes[k].travel - speed * shadows * 5
+          && flying_planes[i].travel > flying_planes[k].travel - plane_speed * shadows * 5
           && flying_planes[i].dir == flying_planes[k].dir
           && flying_planes[i].x == flying_planes[k].x
           && flying_planes[i].y == flying_planes[k].y
         ) {
-          flying_planes[i].travel -= speed * 3;
+          flying_planes[i].travel -= plane_speed * 3;
         }
 
       }
 
-      flying_planes[i].travel += speed;
+      //keeps em moving
+      flying_planes[i].travel += plane_speed;
 
+      //resets the planes at the end
       if (flying_planes[i].travel >= max_travel) {
         flying_planes[i].plane_color = Math.floor(Math.random() * plane_colors_lengnth),
           flying_planes[i].dir = !!Math.floor(Math.random() * 2),
@@ -189,63 +217,59 @@ function draw() {
       }
     }
   } else if (art_style == 1) {
+    //makes sure it doesn't go on for infinity
+    if (yy < height) {
 
-    let sin_art = [
-      color(255, 0, 0),
-      color(255, 0, 0),
-      color(255, 255, 0),
-      color(0, 0, 255),
-      color(0, 0, 255),
-      color(0, 255, 0),
-      color(0, 255, 0)
-    ]
+      //makes sure the art doesn't look sstretched
+      const aspect = width / height;
 
+      const y = map(yy, 0, height, -Math.PI, Math.PI);
 
-    let px_size = 1;
-    for (let y = 0; y < y_render; y++) {
-      {
-        for (let x = 0; x < x_render; x++) {
-          {
-            let value = Math.floor(Math.sin((x * x + y * y) / l) * sin_art.length * 1.5) % (sin_art.length)
+      for (let xx = 0; xx < width; xx++) {
+        //calculates position with some complex math
+        const x = map(
+          xx,
+          0,
+          width,
+          -Math.PI * aspect,
+          Math.PI * aspect
+        );
 
-            if (value < 0) {
-              value -= value * 2
-            }
-            push()
-            translate(-width / 2, -height / 2)
-            noStroke()
-            fill(sin_art[value])
-            square(x * px_size, y * px_size, px_size)
-            pop()
-          }
+        const iter = julia(x, y);
+
+        let r, g, b;
+        //calculates the color with some complex math
+        if (iter >= MAX_ITER) {
+          r = 0;
+          g = 0;
+          b = 0;
+        } else {
+          r = Math.sin(iter / 12) ** 2 * 255;
+          g = (15000 / Math.max(iter, 1)) % 256;
+          b = (25000 / Math.max(Math.log(iter + 1), 1)) % 256;
         }
+
+        stroke(r, g, b);
+        //draws the art
+        line(
+          xx - width / 2,
+          yy - height / 2,
+          xx - width / 2,
+          yy - height / 2 + iter
+        );
       }
-    }
-    x_render += render_speed;
-    if (x_render > width / px_size) {
-      x_render = 0;
-      y_render += render_speed;
-    }
-    y_render %= (height / px_size + render_speed);
+      yy += 2;
+    };
   } else if (art_style == 2) {
+
+    //sets up the cam
     orbitControl()
-
-
     background(0)
     noStroke()
 
 
 
-    fill(150)
-    push()
-    translate(0, -100, 0)
-    cylinder(100, 50)
-    pop()
-    push()
-    translate(0, 100, 0)
-    cylinder(100, 50)
-    pop()
-
+    //draws the bubbles
     for (let i = 0; i < bubbles.length; i++) {
       push()
       translate(bubbles[i].x + Math.sin(bubbles[i].y / 10) * 3, bubbles[i].y + 100, bubbles[i].z - Math.cos(bubbles[i].y / 10) * 3)
@@ -257,51 +281,66 @@ function draw() {
     }
 
 
-
+    //draws the container or bottle or whatever
+    fill(150)
+    push()
+    translate(0, -100, 0)
+    cylinder(100, 50)
+    pop()
+    push()
+    translate(0, 100, 0)
+    cylinder(100, 50)
+    pop()
     fill(50, 150, 255, 125)
     cylinder(90, 149)
 
 
   } else if (art_style == 3) {
+    //sets up the cam
     background(0)
     noStroke()
     orbitControl()
 
+    //draws the sun
     fill(255, 125, 0)
     sphere(sun_size)
 
+    //a color plalet for the plannets
     let planet_colors = [
-      color(255,0,0),
-      color(0,255,0),
-      color(0,0,255),
-      color(255,255),
-      color(155,155,0),
-      color(155,0,255)
+      color(255, 0, 0),
+      color(0, 255, 0),
+      color(0, 0, 255),
+      color(255, 255),
+      color(155, 155, 0),
+      color(155, 0, 255)
     ]
 
-    for (let i = 0; i < planets.length; i++){
-      let orbit_line_xy = planets[i].travel - planets[i].r/15000 - planets[i].spd/10
+
+    //draws the plannets
+    for (let i = 0; i < planets.length; i++) {
+      let orbit_line_xy = planets[i].travel - planets[i].r / 15000 - planets[i].spd / 10
       let orbit_line_shaddow = color(255)
       push()
       fill(planet_colors[planets[i].color])
       translate(planets[i].x, 0, planets[i].y)
       sphere(planets[i].size)
-      
+
 
       planets[i].y = Math.sin(planets[i].travel) * planets[i].r
       planets[i].x = Math.cos(planets[i].travel) * planets[i].r
 
-      planets[i].travel += planets[i].r/50000+planets[i].spd
-      planets[i].travel %= Math.PI*2
+      planets[i].travel += planets[i].r / 50000 + planets[i].spd
+      planets[i].travel %= Math.PI * 2
       pop()
 
-      for (let j = orbit_line_xy; j > (orbit_line_xy - Math.PI/3.5); j -= 1/(planets[i].r)){
+      //draws a line after the pannets
+      for (let j = orbit_line_xy; j > (orbit_line_xy - Math.PI / 3.5); j -= 1 / (planets[i].r)) {
         push()
-        translate(Math.cos(j-0.01) * planets[i].r, 0, Math.sin(j-0.01) * planets[i].r)
+        translate(Math.cos(j - 0.01) * planets[i].r, 0, Math.sin(j - 0.01) * planets[i].r)
         fill(orbit_line_shaddow)
         sphere(1)
         pop()
-        orbit_line_shaddow = lerpColor(orbit_line_shaddow,color(0),0.02)
+        orbit_line_shaddow = lerpColor(orbit_line_shaddow, color(0), 0.02)
       }
     }
   }
@@ -309,16 +348,28 @@ function draw() {
 
 function keyPressed() {
   if (keyCode === 8) {
-    l = Math.floor(Math.random() * 80 + 20);
-    make_bubbles()
-    make_flying_planes()
-    make_planets()
+    //resets positions and renders
+    yy = 0;
+    clear();
+    background(0);
+
+    //rng everything
+    julia_rng();
+    make_bubbles();
+    make_flying_planes();
+    make_planets();
+
 
   } else if (keyCode === 13) {
-
-    art_style++
-    art_style %= art_styles
-    resetCamera()
+    //switches art style or window or whatever you like to call it
+    art_style++;
+    art_style %= art_styles;
+  
+    resetCamera();
+    
+    //resets positions and renders
+    yy = 0;
+    clear();
     background(0);
   }
 }
