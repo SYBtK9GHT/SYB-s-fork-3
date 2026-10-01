@@ -1,30 +1,15 @@
 const art_styles = 4;
 let art_style = Math.floor(Math.random() * art_styles);
+
+
+
+let flying_planes = [];
 let angle = 0;
 const plane_colors_lengnth = 10;
 const plane_speed = 5;
-const shadows = 6;
-const size = 30;
-const max_travel = 2000
-let planets = []
-let sun_size = 50
-let bubbles = []
-let flying_planes = []
-let l, a, b;
-const MAX_ITER = 100;
-let maxx, maxy;
-let yy = 0;
-
-
-class bubble {
-  constructor(x, y, z, size) {
-    this.x = x
-    this.y = y
-    this.z = z
-    this.size = size
-  };
-}
-
+const plane_shadows = 6;
+const plane_size = 30;
+const max_travel = 2000;
 class flying_plane {
   constructor(plane_color, dir, x, y, travel) {
     this.plane_color = plane_color
@@ -34,7 +19,6 @@ class flying_plane {
     this.travel = travel
   };
 }
-
 function make_flying_planes() {
   flying_planes = [];
   for (let _ = 0; _ < 300; _++) {
@@ -49,33 +33,41 @@ function make_flying_planes() {
     )
   };
 }
+function draw_flying_plane(plane_color, dir, x, y, travel) {
+  //picks a color from the paller
+  let colors = [
+    color(255, 0, 0),
+    color(0, 0, 255),
+    color(0, 255, 0),
+    color(255, 255, 0),
+    color(0, 255, 255),
+    color(155, 0, 255),
+    color(0, 255, 100),
+    color(255),
+    color(255, 0, 255),
+    color(255, 0, 255),
+  ];
+  let shadow = colors[plane_color];
 
-class planet {
-  constructor(x, y, r, spd, size, color, travel) {
-    this.x = x
-    this.y = y
-    this.r = r
-    this.spd = spd
-    this.size = size
-    this.color = color
-    this.travel = travel
-  };
+  //draws the plane with a few addes shadows
+  noStroke();
+  for (let j = 0; j < plane_shadows; j++) {
+    fill(shadow);
+    push();
+    if (dir) { rotate(90, [0, 1, 0]); }
+    translate(x * plane_size * 1.1, -(y * plane_size * 2 * 1.05 + dir * plane_size * 1.1), travel - 20 * j);
+    plane(plane_size);
+    pop();
+    shadow = lerpColor(shadow, color(0, 0, 0), (1.85 / plane_shadows))
+  }
 }
 
-function make_planets() {
-  planets = []
-  for (let i = 0; i < 15; i++) {
-    planets.push(new planet(
-      0, 0,
-      Math.floor(Math.random() * 7 + 1) * 3 + 55 * i + 15 + sun_size * 2,
-      Math.random() / 75 + 0.05,
-      Math.floor(Math.random() * 10 + 7),
-      Math.floor(Math.random() * 6),
-      Math.random() * 6.28
-    ))
-  };
-}
 
+
+const MAX_ITER = 100;
+let l, a, b;
+let maxx, maxy;
+let yy = 0;
 function julia(x, y) {
   //calculats the fractal of julia
   for (let iter = 0; iter < MAX_ITER; iter++) {
@@ -99,35 +91,17 @@ function julia_rng() {
   b = 0.2 + l;
 }
 
-function draw_flying_plane(plane_color, dir, x, y, travel) {
-  //picks a color from the paller
-  let colors = [
-    color(255, 0, 0),
-    color(0, 0, 255),
-    color(0, 255, 0),
-    color(255, 255, 0),
-    color(0, 255, 255),
-    color(155, 0, 255),
-    color(0, 255, 100),
-    color(255),
-    color(255, 0, 255),
-    color(255, 0, 255),
-  ];
-  let shadow = colors[plane_color];
 
-  //draws the plane with a few addes shadows
-  noStroke();
-  for (let j = 0; j < shadows; j++) {
-    fill(shadow);
-    push();
-    if (dir) { rotate(90, [0, 1, 0]); }
-    translate(x * size * 1.1, -(y * size * 2 * 1.05 + dir * size * 1.1), travel - 20 * j);
-    plane(size);
-    pop();
-    shadow = lerpColor(shadow, color(0, 0, 0), (1.85 / shadows))
-  }
+
+let bubbles = [];
+class bubble {
+  constructor(x, y, z, size) {
+    this.x = x
+    this.y = y
+    this.z = z
+    this.size = size
+  };
 }
-
 function make_bubbles() {
   bubbles = [] //clears array
   //fill array
@@ -137,6 +111,35 @@ function make_bubbles() {
       Math.floor(Math.random() * 175 - 150),
       Math.floor(Math.random() * 100 - 50),
       Math.floor(1.2 * Math.random() * 2.5 + 2),
+    ))
+  };
+}
+
+
+
+let planets = [];
+let sun_size = 50;
+class planet {
+  constructor(x, y, r, spd, size, color, travel) {
+    this.x = x
+    this.y = y
+    this.r = r
+    this.spd = spd
+    this.size = size
+    this.color = color
+    this.travel = travel
+  };
+}
+function make_planets() {
+  planets = []
+  for (let i = 0; i < 15; i++) {
+    planets.push(new planet(
+      0, 0,
+      Math.floor(Math.random() * 7 + 1) * 3 + 55 * i + 15 + sun_size * 2,
+      Math.random() / 75 + 0.05,
+      Math.floor(Math.random() * 10 + 7),
+      Math.floor(Math.random() * 6),
+      Math.random() * 6.28
     ))
   };
 }
@@ -154,10 +157,8 @@ function resetCamera() {
 
 
 
-
-
 function setup() {
-  createCanvas(windowWidth - 25, windowHeight - 20, WEBGL);
+  createCanvas(windowWidth - 15, windowHeight - 15, WEBGL);
   background(0);
 
   //make first rng to make them something other than NULL
@@ -194,7 +195,7 @@ function draw() {
       for (let k = 0; k < flying_planes.length; k++) {
         if (flying_planes[i] != flying_planes[k]
           && flying_planes[i].travel < flying_planes[k].travel
-          && flying_planes[i].travel > flying_planes[k].travel - plane_speed * shadows * 5
+          && flying_planes[i].travel > flying_planes[k].travel - plane_speed * plane_shadows * 5
           && flying_planes[i].dir == flying_planes[k].dir
           && flying_planes[i].x == flying_planes[k].x
           && flying_planes[i].y == flying_planes[k].y
@@ -258,7 +259,7 @@ function draw() {
           yy - height / 2 + iter
         );
       }
-      yy += 2;
+      yy ++;
     };
   } else if (art_style == 2) {
 
@@ -320,6 +321,7 @@ function draw() {
     for (let i = 0; i < planets.length; i++) {
       let orbit_line_xy = planets[i].travel - planets[i].r / 15000 - planets[i].spd / 10
       let orbit_line_shaddow = color(255)
+
       push()
       fill(planet_colors[planets[i].color])
       translate(planets[i].x, 0, planets[i].y)
@@ -329,14 +331,14 @@ function draw() {
       planets[i].y = Math.sin(planets[i].travel) * planets[i].r
       planets[i].x = Math.cos(planets[i].travel) * planets[i].r
 
-      planets[i].travel += planets[i].r / 50000 + planets[i].spd
+      planets[i].travel += planets[i].r / 50000 + planets[i].spd/2
       planets[i].travel %= Math.PI * 2
       pop()
 
       //draws a line after the pannets
       for (let j = orbit_line_xy; j > (orbit_line_xy - Math.PI / 3.5); j -= 1 / (planets[i].r)) {
         push()
-        translate(Math.cos(j - 0.01) * planets[i].r, 0, Math.sin(j - 0.01) * planets[i].r)
+        translate(Math.cos(j) * planets[i].r, 0, Math.sin(j) * planets[i].r)
         fill(orbit_line_shaddow)
         sphere(1)
         pop()
