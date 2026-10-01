@@ -1,13 +1,23 @@
 const width = 800;
 const height = 600;
 const art_styles = 4;
-let art_style = Math.floor(Math.random()*art_styles);
+let art_style = 3//Math.floor(Math.random()*art_styles);
 let angle = 0;
 const plane_colors_lengnth = 10;
 const speed = 5;
 const shadows = 6;
 const size = 30;
 const max_travel = 2000
+let x_render = 0
+let y_render = 0
+let planets = []
+let sun_size = 20
+const render_speed = 200
+let bubbles = []
+let flying_planes = []
+let l = Math.floor(Math.random() * 80 + 20)
+
+
 class bubble {
   constructor(x, y, z, size) {
     this.x = x
@@ -16,14 +26,6 @@ class bubble {
     this.size = size
   }
 }
-let bubbles = []
-make_bubbles()
-
-
-let x_render = 0
-let y_render = 0
-
-const render_speed = 200
 
 class flying_plane {
   constructor(plane_color, dir, x, y, travel) {
@@ -34,9 +36,6 @@ class flying_plane {
     this.travel = travel
   }
 }
-
-let flying_planes = []
-make_flying_planes()
 
 function make_flying_planes() {
   flying_planes = []
@@ -53,7 +52,6 @@ function make_flying_planes() {
   }
 }
 
-
 class planet{
   constructor(x,y,r,spd,size,color,travel){
     this.x = x
@@ -65,23 +63,24 @@ class planet{
     this.travel = travel 
   }
 }
-let planets = []
-let sun_size = 20
+
 
 function make_planets() {
   planets = []
   for (let i = 0; i < 15; i++) {
     planets.push(new planet(
       0,0,
-      Math.floor(Math.random() * 7 + 1)*3 + 35*i + 15+sun_size,
+      Math.floor(Math.random() * 7 + 1)*3 + 55*i + 15+sun_size*2,
       Math.random()/75+0.05,
-      Math.floor(Math.random() * 7 +3),
+      Math.floor(Math.random() * 10 + 7),
       Math.floor(Math.random() * 6),
       Math.random() * 6.28
     ))
   }
 }
 
+make_bubbles()
+make_flying_planes()
 make_planets()
 
 
@@ -143,7 +142,7 @@ function setup() {
   background(0);
 }
 
-let l = Math.floor(Math.random() * 80 + 20)
+
 
 function draw() {
   angleMode(DEGREES);
@@ -281,6 +280,8 @@ function draw() {
     ]
 
     for (let i = 0; i < planets.length; i++){
+      let orbit_line_xy = planets[i].travel - planets[i].r/15000 - planets[i].spd/10
+      let orbit_line_shaddow = color(255)
       push()
       fill(planet_colors[planets[i].color])
       translate(planets[i].x, 0, planets[i].y)
@@ -290,9 +291,18 @@ function draw() {
       planets[i].y = Math.sin(planets[i].travel) * planets[i].r
       planets[i].x = Math.cos(planets[i].travel) * planets[i].r
 
-      planets[i].travel += planets[i].spd
+      planets[i].travel += planets[i].r/50000+planets[i].spd
       planets[i].travel %= Math.PI*2
       pop()
+
+      for (let j = orbit_line_xy; j > (orbit_line_xy - Math.PI/3.5); j -= 1/(planets[i].r)){
+        push()
+        translate(Math.cos(j-0.01) * planets[i].r, 0, Math.sin(j-0.01) * planets[i].r)
+        fill(orbit_line_shaddow)
+        sphere(1)
+        pop()
+        orbit_line_shaddow = lerpColor(orbit_line_shaddow,color(0),0.02)
+      }
     }
   }
 }
@@ -300,7 +310,6 @@ function draw() {
 function keyPressed() {
   if (keyCode === 8) {
     l = Math.floor(Math.random() * 80 + 20);
-    resetCamera()
     make_bubbles()
     make_flying_planes()
     make_planets()
