@@ -20,17 +20,16 @@ class flying_plane {
   };
 }
 function make_flying_planes() {
-  flying_planes = [];
-  for (let _ = 0; _ < 300; _++) {
-    flying_planes.push(
-      new flying_plane(
-        Math.floor(Math.random() * plane_colors_lengnth),
-        !!Math.floor(Math.random() * 2),
-        Math.floor(Math.random() * 41 - 21),
-        Math.floor(Math.random() * 10 - 6),
-        Math.floor(Math.random() * max_travel * 2 - max_travel)
-      )
-    )
+  flying_planes = []; //clears array
+  //fills array
+  for (let _ = 0; _ < 600; _++) {
+    flying_planes.push(new flying_plane(
+      Math.floor(Math.random() * plane_colors_lengnth),
+      !!Math.floor(Math.random() * 2),
+      Math.floor(Math.random() * 61 - 31),
+      Math.floor(Math.random() * 10 - 6),
+      Math.floor(Math.random() * max_travel * 2 - max_travel)
+    ))
   };
 }
 function draw_flying_plane(plane_color, dir, x, y, travel) {
@@ -103,7 +102,7 @@ class bubble {
   };
 }
 function make_bubbles() {
-  bubbles = [] //clears array
+  bubbles = []; //clears array
   //fill array
   for (let _ = 0; _ < 50; _++) {
     bubbles.push(new bubble(
@@ -131,7 +130,8 @@ class planet {
   };
 }
 function make_planets() {
-  planets = []
+  planets = []; //clears array
+  //fills array
   for (let i = 0; i < 15; i++) {
     planets.push(new planet(
       0, 0,
@@ -149,9 +149,9 @@ function make_planets() {
 function resetCamera() {
   //put cam in my custom default position and oriantation
   camera(
-    0, 0, 800,  
-    0, 0, 0,    
-    0, 1, 0     
+    0, 0, 800,
+    0, 0, 0,
+    0, 1, 0
   );
 }
 
@@ -259,7 +259,7 @@ function draw() {
           yy - height / 2 + iter
         );
       }
-      yy ++;
+      yy++;
     };
   } else if (art_style == 2) {
 
@@ -331,7 +331,7 @@ function draw() {
       planets[i].y = Math.sin(planets[i].travel) * planets[i].r
       planets[i].x = Math.cos(planets[i].travel) * planets[i].r
 
-      planets[i].travel += planets[i].r / 50000 + planets[i].spd/2
+      planets[i].travel += planets[i].r / 50000 + planets[i].spd / 2
       planets[i].travel %= Math.PI * 2
       pop()
 
@@ -366,9 +366,9 @@ function keyPressed() {
     //switches art style or window or whatever you like to call it
     art_style++;
     art_style %= art_styles;
-  
+
     resetCamera();
-    
+
     //resets positions and renders
     yy = 0;
     clear();
