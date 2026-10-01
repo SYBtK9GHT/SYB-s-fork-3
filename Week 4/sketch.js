@@ -44,7 +44,7 @@ function draw_flying_plane(plane_color, dir, x, y, travel) {
     color(0, 255, 100),
     color(255),
     color(255, 0, 255),
-    color(255, 0, 255),
+    color(255, 0, 255)
   ];
   let shadow = colors[plane_color];
 
@@ -109,7 +109,7 @@ function make_bubbles() {
       Math.floor(Math.random() * 100 - 50),
       Math.floor(Math.random() * 175 - 150),
       Math.floor(Math.random() * 100 - 50),
-      Math.floor(1.2 * Math.random() * 2.5 + 2),
+      Math.floor(1.2 * Math.random() * 2.5 + 2)
     ))
   };
 }
