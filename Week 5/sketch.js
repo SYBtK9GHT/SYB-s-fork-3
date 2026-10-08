@@ -220,9 +220,6 @@ const quizes = {
     },
   },
 
-
-  
-
   furries: {
     data: [
       {
@@ -426,7 +423,7 @@ const quizes = {
   backrooms: {
     data: [
       {
-        question: "what is the main \nway people enter the backrooms",
+        question: "what is the main way \npeople enter the backrooms",
         awnsers: {
           "no-clipping out of reality": true,
           "opening a secret door": false,
@@ -535,7 +532,7 @@ const quizes = {
         }
       },
       {
-        question: "which character is \nknown for using a Master Sword",
+        question: "which character is known \nfor using a Master Sword",
         awnsers: {
           "Link": true,
           "Cloud Strife": false,
@@ -589,7 +586,7 @@ const quizes = {
         }
       },
       {
-        question: "which character can \nswallow enemies and copy abilities",
+        question: "which character can swallow \n enemies and copy abilities",
         awnsers: {
           "Kirby": true,
           "Yoshi": false,
@@ -598,7 +595,7 @@ const quizes = {
         }
       },
       {
-        question: "which series includes \npallet Town and Team Rocket",
+        question: "which series includes pallet \nTown and Team Rocket",
         awnsers: {
           "Pokémon": true,
           "Dragon Quest": false,
@@ -634,24 +631,22 @@ const quizes = {
           "ice cream": false
         }
       },
-      /////////
       {
-        question: "how many legs do \nclassic european dragons have",
+        question: "what is the 2nd best human \ndragon carekeeper",
         awnsers: {
-          "four": true,
-          "two": false,
-          "six": false,
-          "eight": false
+          "farmer": true,
+          "king": false,
+          "scholar": false,
+          "smith": false
         }
       },
-      /////////////////
       {
-        question: "what do dragons \nusually have on their backs",
+        question: "a dragons \nfavorite food",
         awnsers: {
-          "wings": true,
-          "wheels": false,
-          "propellers": false,
-          "fins": false
+          "cow": true,
+          "instant noodles": false,
+          "deer": false,
+          "horse": false
         }
       },
       {
@@ -666,24 +661,23 @@ const quizes = {
       {
         question: "which creature is \nnot a dragon",
         awnsers: {
-          "argonians": true,
+          "argonian": true,
           "wyvren": false,
           "long": false,
           "kobold": false
         }
       },
-      ///////
       {
-        question: "what do dragons \ncommonly guard",
+        question: "what a dragons \nleast favirite food",
         awnsers: {
-          "treasure": true,
-          "sandwiches": false,
-          "bookshelves": false,
-          "bicycles": false
+          "human": true,
+          "ice cream": false,
+          "brocoli": false,
+          "sheep": false
         }
       },
       {
-        question: "what is a dragon's \nnatural weapon often shown as",
+        question: "what is a dragon's natural \nweapon often shown as",
         awnsers: {
           "breath": true,
           "claws": false,
@@ -692,7 +686,7 @@ const quizes = {
         }
       },
       {
-        question: "why do people always say dragons \nhoard gems jewels and coins",
+        question: "why do people say dragons \nhoard gems jewels and coins",
         awnsers: {
           "to show there descrutive powers": true,
           "to fullfill their greed": false,
@@ -863,6 +857,8 @@ let quiz_order = [];
 let quiz_index = 0
 let current_questions = [];
 
+let correct;
+let wrong;
 
 function shuffle_dict(dict) {
   let arr = Object.keys(dict);
@@ -884,6 +880,11 @@ function play_quiz(quiz) {
     quiz_order.push(quiz[Q[i]])
   }
 
+}
+
+function preload(){
+  correct = loadSound("./correct.mp3");
+  wrong = loadSound("./wrong.mp3");
 }
 
 function setup() {
@@ -1020,11 +1021,13 @@ function mouseClicked() {
             fill(0, 255, 0)
             textSize(200)
             text("TRUE", 100, 350)
+            correct.play()
           } else if (!check) {
             False_counter++
             fill(255, 0, 0)
             textSize(200)
             text("FALSE", 100, 350)
+            wrong.play()
           }
           console.log(check, i);
           quiz_index++
