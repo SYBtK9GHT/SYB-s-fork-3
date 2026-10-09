@@ -877,6 +877,8 @@ let current_questions = [];
 
 let correct;
 let wrong;
+let foxy_sound;
+let foxy_img;
 
 function shuffle_dict(dict) {
   let arr = Object.keys(dict);
@@ -903,6 +905,8 @@ function play_quiz(quiz) {
 function preload() {
   correct = loadSound("./correct.mp3");
   wrong = loadSound("./wrong.mp3");
+  foxy_sound = loadSound("./foxyjumpscare.mp3")
+  foxy_img = loadImage("./foxyjumpscare.jpg")
 }
 
 function setup() {
@@ -1037,6 +1041,7 @@ function mouseClicked() {
           background(220);
           stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
           background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
+
           if (check) {
             True_counter++
             fill(0, 255, 0)
@@ -1045,10 +1050,18 @@ function mouseClicked() {
             correct.play()
           } else if (!check) {
             False_counter++
+
+            const x = Math.random()
+            console.log(x)
+            if (x < 0.1) {
+              image(foxy_img, -250, 0)
+              foxy_sound.play()
+            } else {
+              wrong.play()
+            }
             fill(255, 0, 0)
             textSize(200)
             text("FALSE", 100, 350)
-            wrong.play()
           }
           console.log(check, i);
           quiz_index++
