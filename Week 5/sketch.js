@@ -111,7 +111,6 @@ const quizes = {
     },
   },
 
-
   Morrowind: {
     data: [
       {
@@ -735,99 +734,99 @@ const quizes = {
   },
 
   blahaj: {
-    data:
-      [
-        {
-          question: "what animal is \nblahaj",
-          awnsers: {
-            "shark": true,
-            "whale": false,
-            "dolphin": false,
-            "seal": false
-          }
-        },
-        {
-          question: "what color is \nblahaj",
-          awnsers: {
-            "blue": true,
-            "red": false,
-            "yellow": false,
-            "green": false
-          }
-        },
-        {
-          question: "where is blahaj \ncommonly sold",
-          awnsers: {
-            "IKEA": true,
-            "NASA": false,
-            "Nintendo": false,
-            "Valve": false
-          }
-        },
-        {
-          question: "what kind of shark \nis blahaj",
-          awnsers: {
-            "stuffed shark": true,
-            "real shark": false,
-            "robot shark": false,
-            "dragon shark": false
-          }
-        },
-        {
-          question: "what is blahaj \nmainly used as",
-          awnsers: {
-            "a plush toy": true,
-            "a computer mouse": false,
-            "a backpack": false,
-            "a lamp": false
-          }
-        },
-        {
-          question: "what does the name \nblahaj mean",
-          awnsers: {
-            "blue shark": true,
-            "red whale": false,
-            "big fish": false,
-            "soft seal": false
-          }
-        },
-        {
-          question: "what country is IKEA \nfrom",
-          awnsers: {
-            "Sweden": true,
-            "Norway": false,
-            "Germany": false,
-            "Finland": false
-          }
-        },
-        {
-          question: "what shape is \nblahaj's body",
-          awnsers: {
-            "shark-shaped": true,
-            "square": false,
-            "round": false,
-            "triangular": false
-          }
-        },
-        {
-          question: "what do people often \ndo with blahaj",
-          awnsers: {
-            "hug it": true,
-            "eat it": false,
-            "drive it": false,
-            "wear it as shoes": false
-          }
-        },
-        {
-          question: "what is blahaj \nfamous for online",
-          awnsers: {
-            "being a beloved shark plush": true,
-            "being a video game boss": false,
-            "being a Linux distro": false,
-            "being a dragon": false
-          }
+    data: [
+      {
+        question: "which store made \nblahaj widely known",
+        awnsers: {
+          "IKEA": true,
+          "Walmart": false,
+          "LEGO": false,
+          "Target": false
         }
-      ],
+      },
+      {
+        question: "which feature makes \nblahaj recognizable",
+        awnsers: {
+          "blue body and white belly": true,
+          "gray fur and black spots": false,
+          "red fins and yellow eyes": false,
+          "green scales and sharp horns": false
+        }
+      },
+      {
+        question: "what is blahaj's \nname in Swedish",
+        awnsers: {
+          "Blåhaj": true,
+          "Blåval": false,
+          "Havskatt": false,
+          "Sjöhäst": false
+        }
+      },
+      {
+        question: "which part of blahaj \nis usually white",
+        awnsers: {
+          "its underside": true,
+          "its dorsal fin": false,
+          "its tail": false,
+          "its nose": false
+        }
+      },
+      {
+        question: "which real shark \nresembles blahaj most",
+        awnsers: {
+          "blue shark": true,
+          "great white shark": false,
+          "hammerhead shark": false,
+          "whale shark": false
+        }
+      },
+      {
+        question: "why might someone \nkeep blahaj on their bed",
+        awnsers: {
+          "for comfort or decoration": true,
+          "to keep the mattress cool": false,
+          "to store small objects": false,
+          "to use as a pillow for travel": false
+        }
+      },
+      {
+        question: "which language does \nthe word 'blå' come from",
+        awnsers: {
+          "Swedish": true,
+          "Dutch": false,
+          "French": false,
+          "Japanese": false
+        }
+      },
+      {
+        question: "what is a common \ntrait of plush toys like blahaj",
+        awnsers: {
+          "they are soft and filled": true,
+          "they contain electronic parts": false,
+          "they are made for swimming": false,
+          "they are designed to make sounds": false
+        }
+      },
+      {
+        question: "which community helped \nmake blahaj an internet icon",
+        awnsers: {
+          "online meme and fan communities": true,
+          "professional racing fans": false,
+          "weather forecasting groups": false,
+          "competitive chess clubs": false
+        }
+      },
+      {
+        question: "what does IKEA's \nname originate from",
+        awnsers: {
+          "the founder's initials and places in Sweden": true,
+          "the Swedish word for furniture": false,
+          "the names of four Scandinavian cities": false,
+          "an old Viking expression": false
+        }
+      }
+    ],
+
     style: {
       text_color: [255, 255, 255],
       button_color: [255, 150, 155],
@@ -971,7 +970,7 @@ function draw() {
         rect(x * 395 + 10, y * 60 + 460, 390, 50, 5)
         fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
         stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
-        textSize(19)
+        textSize(18)
         text((String.fromCharCode(65 + parseInt(i)) + ": " + current_questions[i]), x * 395 + 20, y * 60 + 490)
       }
     } else {
@@ -988,7 +987,7 @@ function draw() {
       text("click to restart", 150, 500);
     }
   } else {
-    if (millis() - last_time > 2000) {
+    if (millis() - last_time > 3000) {
       checking = false;
     }
   }
@@ -1052,7 +1051,6 @@ function mouseClicked() {
             False_counter++
 
             const x = Math.random()
-            console.log(x)
             if (x < 0.1) {
               image(foxy_img, -250, 0)
               foxy_sound.play()
@@ -1076,6 +1074,8 @@ function mouseClicked() {
       in_quiz = false;
     }
   } else {
-    checking = false
+    if (millis() - last_time > 500) {
+      checking = false;
+    }
   }
 }
