@@ -105,7 +105,9 @@ const quizes = {
     style: {
       text_color: [0, 0, 0],
       button_color: [255, 255, 0],
-      stroke_color: [255, 255, 0]
+      stroke_color: [255, 255, 0],
+      text_stroke_color: [255, 255, 0],
+      background_color: [250, 250, 250]
     },
   },
 
@@ -214,9 +216,11 @@ const quizes = {
 
     ],
     style: {
-      text_color: [255, 255, 55],
+      text_color: [227, 197, 93],
       button_color: [155, 55, 0],
-      stroke_color: [0, 0, 0]
+      stroke_color: [0, 0, 0],
+      text_stroke_color: [255, 255, 0],
+      background_color: [64, 82, 108]
     },
   },
 
@@ -314,9 +318,11 @@ const quizes = {
       }
     ],
     style: {
-      text_color: [255, 255, 0],
-      button_color: [20, 75, 255],
-      stroke_color: [0, 0, 0]
+      text_color: [255, 255, 255],
+      button_color: [0, 72, 151],
+      stroke_color: [253, 188, 62],
+      text_stroke_color: [56, 100, 156],
+      background_color: [0, 48, 100]
     },
   },
 
@@ -391,7 +397,7 @@ const quizes = {
           "KDE plasme": true,
           "GNOME": false,
           "XFCE": false,
-          "cinnimen": false
+          "hyprland": false
         }
       },
       {
@@ -416,7 +422,9 @@ const quizes = {
     style: {
       text_color: [0, 255, 0],
       button_color: [0, 0, 0],
-      stroke_color: [0, 255,0]
+      stroke_color: [0, 255, 0],
+      text_stroke_color: [0, 255, 0],
+      background_color: [0, 0, 0]
     },
   },
 
@@ -514,9 +522,11 @@ const quizes = {
       }
     ],
     style: {
-      text_color: [50, 50, 0],
-      button_color: [255, 255,0],
-      stroke_color: [0, 0, 0]
+      text_color: [100, 100, 200],
+      button_color: [255, 255, 0],
+      stroke_color: [0, 0, 0],
+      text_stroke_color: [0, 0, 0],
+      background_color: [236, 212, 133],
     },
   },
 
@@ -614,9 +624,11 @@ const quizes = {
       }
     ],
     style: {
-      text_color: [0, 150, 55],
+      text_color: [0, 250, 55],
       button_color: [0, 75, 150],
-      stroke_color: [200, 25, 125]
+      stroke_color: [200, 25, 225],
+      text_stroke_color: [255, 255, 255],
+      background_color: [0, 10, 10]
     },
   },
 
@@ -714,9 +726,11 @@ const quizes = {
       }
     ],
     style: {
-      text_color: [0, 0, 0],
-      button_color: [255, 0, 255],
-      stroke_color: [0, 0, 255]
+      text_color: [0, 200, 255],
+      button_color: [25, 125, 55],
+      stroke_color: [255, 255, 0],
+      text_stroke_color: [0, 0, 0],
+      background_color: [125, 0, 0]
     },
   },
 
@@ -816,8 +830,10 @@ const quizes = {
       ],
     style: {
       text_color: [255, 255, 255],
-      button_color: [100, 150, 255],
-      stroke_color: [255, 150, 155]
+      button_color: [255, 150, 155],
+      stroke_color: [255, 255, 255],
+      text_stroke_color: [100, 150, 255],
+      background_color: [100, 150, 255]
     }
   },
 
@@ -839,7 +855,9 @@ const quizes = {
     style: {
       text_color: [255, 0, 255],
       button_color: [0, 0, 0],
-      stroke_color: [0, 255, 0]
+      stroke_color: [0, 255, 0],
+      text_stroke_color: [255, 255, 255],
+      background_color: [0, 10, 10]
     }
   }
 }
@@ -882,7 +900,7 @@ function play_quiz(quiz) {
 
 }
 
-function preload(){
+function preload() {
   correct = loadSound("./correct.mp3");
   wrong = loadSound("./wrong.mp3");
 }
@@ -894,6 +912,7 @@ function setup() {
 function draw() {
 
   if (!checking) {
+    last_time = millis()
     background(220);
     if (!in_quiz) {
       quiz_order = [];
@@ -924,12 +943,13 @@ function draw() {
         pop()
       }
     } else if (quiz_index < quiz_order.length) {
-      let css = quizes[currnet_quiz]["style"]
+      const css = quizes[currnet_quiz]["style"]
+      background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
       stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2])
       fill(css["button_color"][0], css["button_color"][1], css["button_color"][2])
       rect(10, 10, 780, 145, 5)
       fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
-      noStroke()
+      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
       textSize(90)
       text("Q: ", 30, 110)
       textSize(50)
@@ -946,28 +966,27 @@ function draw() {
         fill(css["button_color"][0], css["button_color"][1], css["button_color"][2])
         rect(x * 395 + 10, y * 60 + 460, 390, 50, 5)
         fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
-        noStroke()
+        stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
         textSize(19)
         text((String.fromCharCode(65 + parseInt(i)) + ": " + current_questions[i]), x * 395 + 20, y * 60 + 490)
       }
     } else {
-      background(220);
-      noStroke()
+      const css = quizes[currnet_quiz]["style"]
+      background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
+      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
       textSize(150);
       fill(0, 255, 0);
       text("T: " + True_counter, 250, 200);
       fill(255, 0, 0);
       text("F: " + False_counter, 250, 400);
-      fill(0);
+      fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
       textSize(75);
       text("click to restart", 150, 500);
-
     }
   } else {
-
-    setTimeout(() => {
-      checking = false
-    }, 1750)
+    if (millis() - last_time > 2000) {
+      checking = false;
+    }
   }
 }
 
@@ -998,6 +1017,7 @@ function mouseClicked() {
         }
       }
     } else if (quiz_index < quiz_order.length) {
+      const css = quizes[currnet_quiz]["style"]
       for (const i in current_questions) {
 
         let x = i
@@ -1015,7 +1035,8 @@ function mouseClicked() {
           checking = true
 
           background(220);
-          noStroke()
+          stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
+          background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
           if (check) {
             True_counter++
             fill(0, 255, 0)
