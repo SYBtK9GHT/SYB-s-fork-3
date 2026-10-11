@@ -1,3 +1,15 @@
+let correct;
+let wrong;
+let foxy_sound;
+let foxy_img;
+
+function preload() {
+  correct = loadSound("./correct.mp3");
+  wrong = loadSound("./wrong.mp3");
+  foxy_sound = loadSound("./foxyjumpscare.mp3");
+  foxy_img = loadImage("./foxyjumpscare.jpg");
+}
+
 const quizes = {
   javascript: {
     data: [
@@ -837,29 +849,130 @@ const quizes = {
   },
 
 
-
-
-  "DEV TEST": {
+  "backrooms+": {
     data: [
       {
-        question: "_______________________\n_______________________",
+        question: "what is the apearance of \nentity:68:party-pooper",
         awnsers: {
-          "this is a dev enviroment": true,
-          "NULL": false,
-          "Undefined": false,
-          "false": false
+          "teen with blue sad mask": true,
+          "human with blured face": false,
+          "everyone forgets it imidiadly": false,
+          "a blue and yellow jester": false
         }
       },
+      {
+        question: "what was level-fun \noriginly known as",
+        awnsers: {
+          "level:52-the:Schoolrooms": true,
+          "level:27-the:Schoolrooms": false,
+          "level:89-the:Schoolrooms": false,
+          "level:76-the:Schoolrooms": false
+        }
+      },
+      {
+        question: "smilers have two subgroups \ncalled frowners and [...] ",
+        awnsers: {
+          "ranklers": true,
+          "screatchers": false,
+          "starers": false,
+          "peekers": false
+        }
+      },
+      {
+        question: "wich of these levels \nare the worst",
+        awnsers: {
+          "level:909 level:4.4 level:777.7": true,
+          "level:-7 level:611 level:-4": false,
+          "level:666 level:!-! level:FUN": false,
+          "level:7479 level:8.1 level:127": false
+        }
+      },
+      {
+        question: "what entity is best \nto see in the worst moments",
+        awnsers: {
+          "entity:71:the-red-knight": true,
+          "entity:68:party-pooper": false,
+          "entity:48:aiden": false,
+          "entity:3-A:frowner": false
+        }
+      },
+      {
+        question: "wich is the worst condtion to \nhave in the backrooms",
+        awnsers: {
+          "severe nut alergy": true,
+          "epelepsy": false,
+          "axanxiety/phobia": false,
+          "missing both legs": false
+        }
+      },
+      {
+        question: "should you follow a random \nwonder and why",
+        awnsers: {
+          "no, there insane/a entity/a trap": true,
+          "no, they atrct mor entities": false,
+          "yes, you can work toghether": false,
+          "yes, it is friendly": false
+        }
+      },
+      {
+        question: "what object can have \n3 forms with similar use",
+        awnsers: {
+          "object:15:fire-salts": true,
+          "object:48:liquid-pain": false,
+          "object:1:almond-water": false,
+          "object:75:Chekhov's-Gun": false
+        }
+      },
+      {
+        question: "what special propeties does \nobject:19:squirt-gun have",
+        awnsers: {
+          "liquids in it dont mix": true,
+          "it shoots water at light speed": false,
+          "it's always full of almond-water": false,
+          "it weight nothing, liquids included": false
+        }
+      },
+      {
+        question: "what level is safe to be in \nbut dangerus to exit",
+        awnsers: {
+          "level:29": true,
+          "level:37": false,
+          "level:1": false,
+          "level:611": false
+        }
+      }
     ],
     style: {
-      text_color: [255, 0, 255],
-      button_color: [0, 0, 0],
-      stroke_color: [0, 255, 0],
-      text_stroke_color: [255, 255, 255],
-      background_color: [0, 10, 10]
-    }
-  }
-}
+      text_color: [100, 100, 200],
+      button_color: [255, 255, 0],
+      stroke_color: [0, 0, 0],
+      text_stroke_color: [0, 0, 0],
+      background_color: [236, 212, 133],
+    },
+  },
+
+
+  // "DEV TEST": {
+  //   data: [
+  //     {
+  //       question: "_______________________\n_______________________",
+  //       awnsers: {
+  //         "this is a dev enviroment": true,
+  //         "NULL": false,
+  //         "Undefined": false,
+  //         "false": false
+  //       }
+  //     },
+  //   ],
+  //   style: {
+  //     text_color: [255, 0, 255],
+  //     button_color: [0, 0, 0],
+  //     stroke_color: [0, 255, 0],
+  //     text_stroke_color: [255, 255, 255],
+  //     background_color: [0, 10, 10]
+  //   }
+  // }
+};
 
 let in_quiz = false;
 let currnet_quiz = "";
@@ -868,16 +981,13 @@ let False_counter = 0;
 let checking = false;
 let last_time = 0;
 
-const quiz_button_size = 200
+const quiz_button_size = 200;
 
 let quiz_order = [];
-let quiz_index = 0
+let quiz_index = 0;
 let current_questions = [];
 
-let correct;
-let wrong;
-let foxy_sound;
-let foxy_img;
+
 
 function shuffle_dict(dict) {
   let arr = Object.keys(dict);
@@ -885,10 +995,10 @@ function shuffle_dict(dict) {
 }
 
 function shuffle_questions(my_promt) {
-  current_questions = []
+  current_questions = [];
   const shuffled_awnsers = shuffle_dict(my_promt["awnsers"])
   for (const i in shuffled_awnsers) {
-    current_questions.push(shuffled_awnsers[i])
+    current_questions.push(shuffled_awnsers[i]);
   }
 }
 
@@ -896,17 +1006,11 @@ function play_quiz(quiz) {
   quiz_order = [];
   const Q = shuffle_dict(quiz)
   for (const i in Q) {
-    quiz_order.push(quiz[Q[i]])
+    quiz_order.push(quiz[Q[i]]);
   }
 
 }
 
-function preload() {
-  correct = loadSound("./correct.mp3");
-  wrong = loadSound("./wrong.mp3");
-  foxy_sound = loadSound("./foxyjumpscare.mp3")
-  foxy_img = loadImage("./foxyjumpscare.jpg")
-}
 
 function setup() {
   createCanvas(800, 600);
@@ -915,7 +1019,7 @@ function setup() {
 function draw() {
 
   if (!checking) {
-    last_time = millis()
+    last_time = millis();
     background(220);
     if (!in_quiz) {
       quiz_order = [];
@@ -946,43 +1050,43 @@ function draw() {
         pop()
       }
     } else if (quiz_index < quiz_order.length) {
-      const css = quizes[currnet_quiz]["style"]
-      background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
-      stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2])
-      fill(css["button_color"][0], css["button_color"][1], css["button_color"][2])
-      rect(10, 10, 780, 145, 5)
-      fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
-      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
-      textSize(90)
-      text("Q: ", 30, 110)
-      textSize(50)
-      text(quiz_order[quiz_index]["question"], 140, 70)
+      const css = quizes[currnet_quiz]["style"];
+      background(css["background_color"][0], css["background_color"][1], css["background_color"][2]);
+      stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2]);
+      fill(css["button_color"][0], css["button_color"][1], css["button_color"][2]);
+      rect(10, 10, 780, 145, 5);
+      fill(css["text_color"][0], css["text_color"][1], css["text_color"][2]);
+      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2]);
+      textSize(90);
+      text("Q: ", 30, 110);
+      textSize(50);
+      text(quiz_order[quiz_index]["question"], 140, 70);
 
       for (const i in current_questions) {
-        let x = i
-        let y = 0
+        let x = i;
+        let y = 0;
         while (x > 1) {
-          x -= 2
-          y++
+          x -= 2;
+          y++;
         }
-        stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2])
-        fill(css["button_color"][0], css["button_color"][1], css["button_color"][2])
-        rect(x * 395 + 10, y * 60 + 460, 390, 50, 5)
-        fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
-        stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
-        textSize(18)
-        text((String.fromCharCode(65 + parseInt(i)) + ": " + current_questions[i]), x * 395 + 20, y * 60 + 490)
+        stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2]);
+        fill(css["button_color"][0], css["button_color"][1], css["button_color"][2]);
+        rect(x * 395 + 10, y * 60 + 460, 390, 50, 5);
+        fill(css["text_color"][0], css["text_color"][1], css["text_color"][2]);
+        stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2]);
+        textSize(18);
+        text((String.fromCharCode(65 + parseInt(i)) + ": " + current_questions[i]), x * 395 + 20, y * 60 + 490);
       }
     } else {
-      const css = quizes[currnet_quiz]["style"]
-      background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
-      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
+      const css = quizes[currnet_quiz]["style"];
+      background(css["background_color"][0], css["background_color"][1], css["background_color"][2]);
+      stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2]);
       textSize(150);
       fill(0, 255, 0);
       text("T: " + True_counter, 250, 200);
       fill(255, 0, 0);
       text("F: " + False_counter, 250, 400);
-      fill(css["text_color"][0], css["text_color"][1], css["text_color"][2])
+      fill(css["text_color"][0], css["text_color"][1], css["text_color"][2]);
       textSize(75);
       text("click to restart", 150, 500);
     }
@@ -998,11 +1102,11 @@ function mouseClicked() {
     if (!in_quiz) {
       for (const key in quizes) {
         const i = pos = Object.keys(quizes).indexOf(key);
-        let x = i
-        let y = 0
+        let x = i;
+        let y = 0;
         while (x > 2) {
-          x -= 3
-          y++
+          x -= 3;
+          y++;
         }
 
         if (mouseX > x * (quiz_button_size + 10) + 75
@@ -1012,58 +1116,58 @@ function mouseClicked() {
 
 
 
-          currnet_quiz = key.toString()
-          console.log(currnet_quiz)
-          in_quiz = true
+          currnet_quiz = key.toString();
+          console.log(currnet_quiz);
+          in_quiz = true;
           play_quiz(quizes[currnet_quiz]["data"]);
-          shuffle_questions(quiz_order[quiz_index])
+          shuffle_questions(quiz_order[quiz_index]);
         }
       }
     } else if (quiz_index < quiz_order.length) {
-      const css = quizes[currnet_quiz]["style"]
+      const css = quizes[currnet_quiz]["style"];
       for (const i in current_questions) {
 
-        let x = i
-        let y = 0
+        let x = i;
+        let y = 0;
         while (x > 1) {
-          x -= 2
-          y++
+          x -= 2;
+          y++;
         }
         if (mouseX > x * 395 + 10
           && mouseY > y * 60 + 460
           && mouseX < x * 395 + 10 + 390
           && mouseY < y * 60 + 460 + 50) {
 
-          let check = quiz_order[quiz_index]["awnsers"][current_questions[i]]
-          checking = true
+          let check = quiz_order[quiz_index]["awnsers"][current_questions[i]];
+          checking = true;
 
           background(220);
-          stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2])
-          background(css["background_color"][0], css["background_color"][1], css["background_color"][2])
+          stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2]);
+          background(css["background_color"][0], css["background_color"][1], css["background_color"][2]);
 
           if (check) {
-            True_counter++
-            fill(0, 255, 0)
-            textSize(200)
-            text("TRUE", 100, 350)
-            correct.play()
+            True_counter++;
+            fill(0, 255, 0);
+            textSize(200);
+            text("TRUE", 100, 350);
+            correct.play();
           } else if (!check) {
-            False_counter++
+            False_counter++;
 
-            const x = Math.random()
-            if (x < 0.1) {
-              image(foxy_img, -250, 0)
-              foxy_sound.play()
+            const x = Math.random();
+            if (x < 0.05) {
+              image(foxy_img, -250, 0);
+              foxy_sound.play();
             } else {
-              wrong.play()
+              wrong.play();
             }
-            fill(255, 0, 0)
-            textSize(200)
-            text("FALSE", 100, 350)
+            fill(255, 0, 0);
+            textSize(200);
+            text("FALSE", 100, 350);
           }
           console.log(check, i);
-          quiz_index++
-          shuffle_questions(quiz_order[quiz_index])
+          quiz_index++;
+          shuffle_questions(quiz_order[quiz_index]);
         }
       }
 
