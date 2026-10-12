@@ -3,14 +3,8 @@ let wrong;
 let foxy_sound;
 let foxy_img;
 
-function preload() {
-  correct = loadSound("./correct.mp3");
-  wrong = loadSound("./wrong.mp3");
-  foxy_sound = loadSound("./foxyjumpscare.mp3");
-  foxy_img = loadImage("./foxyjumpscare.jpg");
-}
-
-const quizes = {
+//a crapload of data for the quiz
+let quizes = {
   javascript: {
     data: [
 
@@ -119,7 +113,8 @@ const quizes = {
       button_color: [255, 255, 0],
       stroke_color: [255, 255, 0],
       text_stroke_color: [255, 255, 0],
-      background_color: [250, 250, 250]
+      background_color: [250, 250, 250],
+      self_img: undefined
     },
   },
 
@@ -231,7 +226,8 @@ const quizes = {
       button_color: [155, 55, 0],
       stroke_color: [0, 0, 0],
       text_stroke_color: [255, 255, 0],
-      background_color: [64, 82, 108]
+      background_color: [64, 82, 108],
+      self_img: undefined
     },
   },
 
@@ -333,7 +329,8 @@ const quizes = {
       button_color: [0, 72, 151],
       stroke_color: [253, 188, 62],
       text_stroke_color: [56, 100, 156],
-      background_color: [0, 48, 100]
+      background_color: [0, 48, 100],
+      self_img: undefined
     },
   },
 
@@ -435,7 +432,8 @@ const quizes = {
       button_color: [0, 0, 0],
       stroke_color: [0, 255, 0],
       text_stroke_color: [0, 255, 0],
-      background_color: [0, 0, 0]
+      background_color: [0, 0, 0],
+      self_img: undefined
     },
   },
 
@@ -538,6 +536,7 @@ const quizes = {
       stroke_color: [0, 0, 0],
       text_stroke_color: [0, 0, 0],
       background_color: [236, 212, 133],
+      self_img: undefined
     },
   },
 
@@ -639,7 +638,8 @@ const quizes = {
       button_color: [0, 75, 150],
       stroke_color: [200, 25, 225],
       text_stroke_color: [255, 255, 255],
-      background_color: [0, 10, 10]
+      background_color: [0, 40, 75],
+      self_img: undefined
     },
   },
 
@@ -741,7 +741,8 @@ const quizes = {
       button_color: [25, 125, 55],
       stroke_color: [255, 255, 0],
       text_stroke_color: [0, 0, 0],
-      background_color: [125, 0, 0]
+      background_color: [125, 0, 0],
+      self_img: undefined
     },
   },
 
@@ -844,7 +845,8 @@ const quizes = {
       button_color: [255, 150, 155],
       stroke_color: [255, 255, 255],
       text_stroke_color: [100, 150, 255],
-      background_color: [100, 150, 255]
+      background_color: [100, 150, 255],
+      self_img: undefined
     }
   },
 
@@ -948,31 +950,57 @@ const quizes = {
       stroke_color: [0, 0, 0],
       text_stroke_color: [0, 0, 0],
       background_color: [236, 212, 133],
+      self_img: undefined
     },
   },
 
-
-  // "DEV TEST": {
-  //   data: [
-  //     {
-  //       question: "_______________________\n_______________________",
-  //       awnsers: {
-  //         "this is a dev enviroment": true,
-  //         "NULL": false,
-  //         "Undefined": false,
-  //         "false": false
-  //       }
-  //     },
-  //   ],
-  //   style: {
-  //     text_color: [255, 0, 255],
-  //     button_color: [0, 0, 0],
-  //     stroke_color: [0, 255, 0],
-  //     text_stroke_color: [255, 255, 255],
-  //     background_color: [0, 10, 10]
-  //   }
-  // }
+  //a develapor test to see functionality and explai the structure in comments 
+  /*
+   "DEV TEST": {
+   
+    data: [
+      {
+        question: "_______________________\n_______________________",
+        awnsers: {
+          "this is a dev enviroment": true,
+          "NULL": false,
+          "Undefined": false,
+          "false": false
+        }
+      },
+    ],
+    
+    style: {
+      text_color: [255, 0, 255],
+      button_color: [0, 0, 0],
+      stroke_color: [0, 255, 0],
+      text_stroke_color: [255, 255, 255],
+      background_color: [0, 10, 10],
+      self_img: undefined
+    }
+  }
+  */
 };
+
+function preload() {
+  correct = loadSound("./correct.mp3");
+  wrong = loadSound("./wrong.mp3");
+  foxy_sound = loadSound("./foxyjumpscare.mp3");
+  foxy_img = loadImage("./foxyjumpscare.jpg");
+
+  quizes.javascript.style.self_img = loadImage("./quiz-imgs/javascript.png");
+  quizes.Morrowind.style.self_img = loadImage("./quiz-imgs/morrowind.png");
+  quizes.furries.style.self_img = loadImage("./quiz-imgs/furries.png");
+  quizes.linux.style.self_img = loadImage("./quiz-imgs/linux.png");
+  quizes.backrooms.style.self_img = loadImage("./quiz-imgs/backrooms.png");
+  quizes.games.style.self_img = loadImage("./quiz-imgs/games.png");
+  quizes.dragons.style.self_img = loadImage("./quiz-imgs/dragons.png");
+  quizes.blahaj.style.self_img = loadImage("./quiz-imgs/blahaj.png");
+  quizes["backrooms+"].style.self_img = loadImage("./quiz-imgs/backrooms.png");
+  quizes["DEV TEST"].style.self_img = loadImage("./quiz-imgs/dev-test.png");
+};
+
+
 
 let in_quiz = false;
 let currnet_quiz = "";
@@ -990,11 +1018,13 @@ let current_questions = [];
 
 
 function shuffle_dict(dict) {
+  //shufles a dict and array instead of just arrays
   let arr = Object.keys(dict);
   return shuffle(arr);
 }
 
 function shuffle_questions(my_promt) {
+  //shuffles the awnsers
   current_questions = [];
   const shuffled_awnsers = shuffle_dict(my_promt["awnsers"])
   for (const i in shuffled_awnsers) {
@@ -1003,6 +1033,7 @@ function shuffle_questions(my_promt) {
 }
 
 function play_quiz(quiz) {
+  //selects quiz lets know one is selected and shuffles them 
   quiz_order = [];
   const Q = shuffle_dict(quiz)
   for (const i in Q) {
@@ -1029,6 +1060,7 @@ function draw() {
       noStroke()
       textSize(50)
       text("SELECT A QUIZ", 200, 50)
+      //displays all quizes
       for (const key in quizes) {
         const i = pos = Object.keys(quizes).indexOf(key);
         let x = i
@@ -1049,9 +1081,20 @@ function draw() {
         text(key.toString(), 20, 60)
         pop()
       }
+      
     } else if (quiz_index < quiz_order.length) {
+      //displays the awnsers and 
       const css = quizes[currnet_quiz]["style"];
       background(css["background_color"][0], css["background_color"][1], css["background_color"][2]);
+
+      push()
+      translate(0,175)
+      //it says undefined
+      //console.log(css.self_img)
+      image(css.self_img,0,0)
+
+      pop()
+
       stroke(css["stroke_color"][0], css["stroke_color"][1], css["stroke_color"][2]);
       fill(css["button_color"][0], css["button_color"][1], css["button_color"][2]);
       rect(10, 10, 780, 145, 5);
@@ -1091,6 +1134,7 @@ function draw() {
       text("click to restart", 150, 500);
     }
   } else {
+  //goes to the next questio afte cartan amount of time
     if (millis() - last_time > 3000) {
       checking = false;
     }
@@ -1108,16 +1152,15 @@ function mouseClicked() {
           x -= 3;
           y++;
         }
-
+        //checks if you clicked a quiz
         if (mouseX > x * (quiz_button_size + 10) + 75
           && mouseY > y * 110 + 100
           && mouseX < x * (quiz_button_size + 10) + 75 + quiz_button_size
           && mouseY < y * 110 + 100 + 100) {
 
 
-
+          //loads the quiz
           currnet_quiz = key.toString();
-          console.log(currnet_quiz);
           in_quiz = true;
           play_quiz(quizes[currnet_quiz]["data"]);
           shuffle_questions(quiz_order[quiz_index]);
@@ -1126,13 +1169,13 @@ function mouseClicked() {
     } else if (quiz_index < quiz_order.length) {
       const css = quizes[currnet_quiz]["style"];
       for (const i in current_questions) {
-
         let x = i;
         let y = 0;
         while (x > 1) {
           x -= 2;
           y++;
         }
+        //checks if you even clicked a button
         if (mouseX > x * 395 + 10
           && mouseY > y * 60 + 460
           && mouseX < x * 395 + 10 + 390
@@ -1145,6 +1188,7 @@ function mouseClicked() {
           stroke(css["text_stroke_color"][0], css["text_stroke_color"][1], css["text_stroke_color"][2]);
           background(css["background_color"][0], css["background_color"][1], css["background_color"][2]);
 
+          //shows if the awnser was correct or not and saves that info
           if (check) {
             True_counter++;
             fill(0, 255, 0);
@@ -1173,11 +1217,13 @@ function mouseClicked() {
 
 
     } else {
+      //resets the game when your done and have no more questions
       True_counter = 0;
       False_counter = 0;
       in_quiz = false;
     }
   } else {
+    //when mouse is clicked and the cooldown is over it goes to the next question 
     if (millis() - last_time > 500) {
       checking = false;
     }
