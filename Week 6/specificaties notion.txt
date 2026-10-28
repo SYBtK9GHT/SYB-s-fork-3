@@ -1,0 +1,13 @@
+huis dier stats
+
+acties
+//TODO animaties
+
+tijdsverloop
+
+feedback //TODO
+
+data opslag
+
+extras
+//TODO mini

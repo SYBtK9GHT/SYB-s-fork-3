@@ -2,3 +2,20 @@ save data
 stats
 combiner script
 pixel-art
+
+
+stats:
+health
+energy
+happynes
+satietyy
+
+rooms:
+sleep
+food
+minigames
+bath
+
+ress:
+x 238
+y 119 
